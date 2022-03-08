@@ -45,3 +45,63 @@ export const PhotoList = styled.div`
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 `;
+
+
+
+
+export const UploadForm = styled.form`
+
+    background-color: #3D3F43;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+
+    input[type=submit] {
+        background-color: #756DF4;
+        border: 0;
+        color: #fff;
+        padding: 8px 16px;
+        font-size: 15px;
+        border-radius: 10px;
+        margin: 0 20px;
+        cursor: pointer;
+    
+        &:hover {
+            opacity: .8;
+            color: #fff;
+        }
+    }
+
+
+    .lds-hourglass {
+        display: inline-block;
+        position: relative;
+        width: 50px;
+        height: 50px;
+    }
+    .lds-hourglass:after {
+        content: " ";
+        display: block;
+        border-radius: 50%;
+        width: 0;
+        height: 0;
+        margin: 0;
+        box-sizing: border-box;
+        border: 32px solid #fff;
+        border-color: #fff transparent #fff transparent;
+        animation: lds-hourglass 1.2s infinite;
+    }
+    @keyframes lds-hourglass {
+        0% {
+            transform: rotate(0);
+            animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        }
+        50% {
+            transform: rotate(900deg);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        100% {
+         transform: rotate(1800deg);
+    }
+}
+`;

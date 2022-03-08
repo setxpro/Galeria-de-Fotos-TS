@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import * as C from './styles/GlobalStyles';
 import * as Photos from './services/photos';
 import { Photo } from './types/photo';
@@ -8,6 +8,8 @@ export const App = () => {
 
   const [loading, setLoading] = useState(false); // Carregando ou não
   const [photos, setPhotos] = useState<Photo[]>([]);
+
+  const [upLoading, setUpLoading] = useState(false);
 
   useEffect(() => {
     const getPhotos = async () => {
@@ -20,6 +22,28 @@ export const App = () => {
     getPhotos();
   }, []);
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+        const file = formData.get('image') as File; // campo image
+
+        if (file && file.size > 0) {
+            setUpLoading(true);
+            let result = await Photos.insert(file);
+            setUpLoading(false);
+
+            if (result instanceof Error) {
+                alert(`${result.name} - ${result.message}`);
+            }
+            else {
+                let newPhotoList = [...photos];
+                newPhotoList.push(result);
+                setPhotos(newPhotoList);
+            }
+        }
+    }
+
   return (
     <C.Container>    
     <C.GobalStyles/>
@@ -27,7 +51,18 @@ export const App = () => {
     <C.Area>
         <C.Header>Galeria de Fotos</C.Header>
 
-      {/* Area de UPload */}
+         {/* Upload */}
+          <C.UploadForm method="POST" onSubmit={handleSubmit}>
+            <input 
+                type="file" 
+                name="image" />
+            <input 
+                type="submit" 
+                value="Enviar" />
+                {upLoading && 
+                  <div className="lds-hourglass"></div>
+                }
+          </C.UploadForm>
 
      {loading &&
       <C.ScreenWarning>
